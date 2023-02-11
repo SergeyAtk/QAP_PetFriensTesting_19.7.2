@@ -8,6 +8,8 @@ class PetFriends:
         self.base_url = "https://petfriends.skillfactory.ru/"
 
     def get_api_key(self, email, password):
+        """Метод отправляет на сервер login и password и возвращает api_key"""
+
         headers = {
             'email': email,
             'password': password
@@ -21,7 +23,10 @@ class PetFriends:
             result = res.text
         return status, result
 
-    def get_list_of_pets(self, auth_key, filter):
+    def get_list_of_pets(self, auth_key: json, filter: str ) -> tuple[int, str]:
+        """Метод отправляет на сервер запрос о выводе всех питомце и возвращает статус
+        запроса на сервер и результат с данными всех питомцев"""
+
         headers = {'auth_key': auth_key['key']}
         filter = {'filter': filter}
 
@@ -36,8 +41,8 @@ class PetFriends:
 
     def add_new_pet(self,
                     auth_key: json, name: str, animal_type: str,
-                    age: str, pet_photo: str) -> json:
-        """Метод отправляет (постит) на сервер данные о добавляемом питомце и возвращает статус
+                    age: str, pet_photo: str) -> any:
+        """Метод отправляет на сервер данные о добавляемом питомце и возвращает статус
         запроса на сервер и результат в формате JSON с данными добавленного питомца"""
 
         data = MultipartEncoder(
@@ -59,7 +64,7 @@ class PetFriends:
         print(result)
         return status, result
 
-    def delete_pet(self, auth_key: json, pet_id: str) -> json:
+    def delete_pet(self, auth_key: json, pet_id: str) -> any:
         """Метод отправляет на сервер запрос на удаление питомца по указанному ID и возвращает
         статус запроса и результат в формате JSON с текстом уведомления о успешном удалении.
         """
